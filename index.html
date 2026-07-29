@@ -2,10 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- /vocal-coach-app/ (rather than a bare "/") so this still resolves once the
+    app is deployed under a subpath, e.g. GitHub Pages' /vocal-coach-app/ -->
     <link rel="icon" type="image/svg+xml" href="/vocal-coach-app/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vocal Coach</title>
-    <script type="module" crossorigin src="/vocal-coach-app/assets/index-R85pW7zi.js"></script>
+    <script>
+      // Visiting the app with ?debug in the URL (e.g. ?debug=1) loads a
+      // small on-screen devtools-style console (via the `eruda` CDN script -
+      // not an installed dependency, only ever fetched in this mode), so
+      // errors/console output/network requests can be inspected on a phone
+      // with no computer attached. This has to run this early - before the
+      // app's own module script - and use `document.write` (rather than a
+      // React effect) specifically so eruda's network-request monitoring is
+      // already active before the app starts fetching anything (piano
+      // samples in particular), instead of missing those early requests.
+      if (new URLSearchParams(location.search).has('debug')) {
+        document.write('<script src="https://cdn.jsdelivr.net/npm/eruda"><\/script>');
+        document.write('<script>eruda.init();<\/script>');
+      }
+    </script>
+    <script type="module" crossorigin src="/vocal-coach-app/assets/index-DlBAwDkh.js"></script>
     <link rel="stylesheet" crossorigin href="/vocal-coach-app/assets/index-NCDmVbNe.css">
   </head>
   <body>
